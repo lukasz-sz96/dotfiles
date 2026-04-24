@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Re-run when package list changes:
+# pacman: {{ include "packages/pacman.txt" | sha256sum }}
+
+tmp="$(mktemp)"
+trap 'rm -f "$tmp"' EXIT
+
+sed 's/#.*//' "{{ .chezmoi.sourceDir }}/packages/pacman.txt" \
+  | sed '/^\s*$/d' \
+  | sort -u > "$tmp"
+
+echo "==> Installing pacman packages"
+while read -r pkg; do
+  if pacman -Si "$pkg" >/dev/null 2>&1; then
+    sudo pacman -S --needed --noconfirm "$pkg"
+  else
+    echo "!! Skipping unavailable pacman package: $pkg"
+  fi
+done < "$tmp"

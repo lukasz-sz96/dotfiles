@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+users_file="{{ .chezmoi.sourceDir }}/users/extra-users.txt"
+
+if [[ ! -f "$users_file" ]]; then
+  exit 0
+fi
+
+while IFS=: read -r username is_admin shell_path; do
+  [[ -z "$username" || "$username" =~ ^# ]] && continue
+
+  if id "$username" >/dev/null 2>&1; then
+    echo "==> User already exists: $username"
+    continue
+  fi
+
+  groups="audio,video,input,storage,power,network"
+  if [[ "$is_admin" == "true" ]]; then
+    groups="wheel,$groups"
+  fi
+
+  echo "==> Creating user: $username"
+  sudo useradd -m -G "$groups" -s "$shell_path" "$username"
+
+  echo "==> Created user '$username' with no password set."
+  echo "==> Set password later with: sudo passwd $username"
+done < "$users_file"

@@ -1,0 +1,3 @@
+vesktop-bin
+openai-codex-bin
+claude-code

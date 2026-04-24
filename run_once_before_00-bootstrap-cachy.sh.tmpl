@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v pacman >/dev/null 2>&1; then
+  echo "This bootstrap is intended for CachyOS/Arch systems."
+  exit 0
+fi
+
+echo "==> Updating package database"
+sudo pacman -Sy --needed --noconfirm git base-devel curl chezmoi
+
+echo "==> Enabling wheel sudo if commented"
+if sudo grep -q '^# %wheel ALL=(ALL:ALL) ALL' /etc/sudoers; then
+  sudo sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
+fi

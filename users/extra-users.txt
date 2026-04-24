@@ -1,0 +1,2 @@
+dev:true:/usr/bin/fish
+v:true:/usr/bin/fish

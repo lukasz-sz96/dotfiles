@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Re-run when AUR list changes:
+# aur: {{ include "packages/aur.txt" | sha256sum }}
+
+aur_file="{{ .chezmoi.sourceDir }}/packages/aur.txt"
+
+if ! command -v paru >/dev/null 2>&1; then
+  echo "paru is not installed; skipping AUR packages."
+  exit 0
+fi
+
+grep -vE '^\s*($|#)' "$aur_file" | while read -r pkg; do
+  echo "==> Installing AUR package: $pkg"
+  paru -S --needed --noconfirm "$pkg" || echo "!! Failed/skipped AUR package: $pkg"
+done
