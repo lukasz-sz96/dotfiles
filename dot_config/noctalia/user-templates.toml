@@ -19,3 +19,8 @@
 input_path = "~/.config/noctalia/templates/starship-apply-trigger.txt"
 output_path = "~/.cache/noctalia/starship-apply-trigger"
 post_hook = "PALETTE_FILE=\"$HOME/.cache/noctalia/starship-palette.toml\" /etc/xdg/quickshell/noctalia-shell/Scripts/bash/template-apply.sh starship"
+
+[templates.nvim-base16]
+input_path = "~/.config/nvim/lua/matugen-template.lua"
+output_path = "~/.config/nvim/lua/matugen.lua"
+post_hook = 'pkill -SIGUSR1 nvim'
