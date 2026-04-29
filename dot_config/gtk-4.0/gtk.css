@@ -1,0 +1,33 @@
+@import url("noctalia.css");
+
+/* Nautilus translucent background. */
+window.nautilus-window {
+  --window-bg-color: color-mix(in srgb, @window_bg_color 40%, transparent);
+  --view-bg-color: transparent;
+  --headerbar-bg-color: transparent;
+  --headerbar-backdrop-color: transparent;
+  --sidebar-bg-color: transparent;
+  --sidebar-backdrop-color: transparent;
+  --secondary-sidebar-bg-color: transparent;
+  background: color-mix(in srgb, @window_bg_color 40%, transparent);
+}
+
+window.nautilus-window .background,
+window.nautilus-window .view,
+window.nautilus-window toolbarview,
+window.nautilus-window toolbarview > .top-bar,
+window.nautilus-window toolbarview > .bottom-bar,
+window.nautilus-window overlay-split-view,
+window.nautilus-window navigation-view,
+window.nautilus-window placessidebar,
+window.nautilus-window .navigation-sidebar,
+window.nautilus-window .nautilus-grid-view,
+window.nautilus-window .nautilus-list-view,
+window.nautilus-window .nautilus-network-view,
+window.nautilus-window .nautilus-grid-view gridview,
+window.nautilus-window .nautilus-list-view columnview,
+window.nautilus-window .nautilus-list-view columnview > listview,
+window.nautilus-window .nautilus-network-view listview {
+  background: transparent;
+  background-color: transparent;
+}
