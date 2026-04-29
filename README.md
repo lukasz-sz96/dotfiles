@@ -33,6 +33,7 @@ The install scripts run through chezmoi:
 - `run_onchange_before_10-install-pacman-packages.sh.tmpl` installs packages from `packages/pacman.txt`.
 - `run_once_before_20-install-paru.sh.tmpl` installs `paru` if it is missing.
 - `run_onchange_before_30-install-aur-packages.sh.tmpl` installs packages from `packages/aur.txt`.
+- `run_once_after_40-install-vite-plus.sh.tmpl` installs the Vite+ `vp` CLI using the upstream Linux installer.
 - `run_once_after_80-create-extra-users.sh.tmpl` creates users listed in `users/extra-users.txt`.
 
 Review the scripts before applying on a new machine.

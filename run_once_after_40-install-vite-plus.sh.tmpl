@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+{{- if eq .chezmoi.os "linux" }}
+if command -v vp >/dev/null 2>&1; then
+  exit 0
+fi
+
+if ! command -v curl >/dev/null 2>&1; then
+  echo "curl is not installed; skipping Vite+ install."
+  exit 0
+fi
+
+echo "==> Installing Vite+"
+curl -fsSL https://vite.plus | bash
+{{- else }}
+echo "Vite+ install is configured only for Linux; skipping on {{ .chezmoi.os }}."
+{{- end }}
