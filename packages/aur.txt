@@ -1,3 +1,5 @@
 vesktop-bin
 openai-codex-bin
 claude-code
+luarocks
+python-pip
