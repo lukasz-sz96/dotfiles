@@ -1,0 +1,147 @@
+palette = "noctalia"
+# Don't print a new line at the start of the prompt
+add_newline = false
+# Pipes ╰─ ╭─
+# Powerline symbols                                     
+# Wedges 🭧🭒 🭣🭧🭓
+# Random noise 🬖🬥🬔🬗
+# Cool stuff 󰜥   
+
+# format = """
+# $directory $fill $git_branch $cmd_duration
+#  $character"""
+format = """
+$cmd_duration $directory$git_branch
+  $character"""
+
+[fill]
+symbol = '-'
+style = 'fg:subtext0'
+
+# Replace the "❯" symbol in the prompt with "➜"
+[character]                            # The name of the module we are configuring is "character"
+success_symbol = "[ ](bold fg:blue)"
+error_symbol = "[ ](bold fg:red)"
+
+# Disable the package module, hiding it from the prompt completely
+[package]
+disabled = true
+
+[git_branch]
+style = "bg:green"
+symbol = "󰘬"
+truncation_length = 12
+truncation_symbol = ""
+format = " 󰜥 [](bold fg:green)[$symbol $branch(:$remote_branch)](fg:base bg:green)[ ](bold fg:green)"
+
+[git_commit]
+commit_hash_length = 4
+tag_symbol = " "
+
+[git_state]
+format = '[\($state( $progress_current of $progress_total)\)]($style) '
+cherry_pick = "[🍒 PICKING](bold red)"
+
+[git_status]
+conflicted = " 🏳 "
+ahead = " 🏎💨 "
+behind = " 😰 "
+diverged = " 😵 "
+untracked = " 🤷 ‍"
+stashed = " 📦 "
+modified = " 📝 "
+staged = '[++\($count\)](green)'
+renamed = " ✍️ "
+deleted = " 🗑 "
+
+[hostname]
+ssh_only = false
+format =  "[•$hostname](bg:surface2 bold fg:text)[](bold fg:surface2)"
+trim_at = ".companyname.com"
+disabled = false
+
+[line_break]
+disabled = false
+
+[memory_usage]
+disabled = true
+threshold = -1
+symbol = " "
+style = "bold dimmed green"
+
+[time]
+disabled = true
+format = '🕙[\[ $time \]]($style) '
+time_format = "%T"
+
+[username]
+style_user = "bold bg:surface2 fg:text"
+style_root = "red bold"
+format = "[](bold fg:surface2)[$user]($style)"
+disabled = false
+show_always = true
+
+[directory]
+home_symbol = " "
+read_only = "  "
+style = "bg:blue fg:base"
+truncation_length = 2
+truncation_symbol = ".../"
+format = '[](bold fg:blue)[󰉋 → $path]($style)[](bold fg:blue)'
+
+
+[directory.substitutions]
+"Desktop" = "  "
+"Documents" = "  "
+"Downloads" = "  "
+"Music" = " 󰎈 "
+"Pictures" = "  "
+"Videos" = "  "
+"GitHub" = " 󰊤 "
+
+[cmd_duration]
+min_time = 0
+format = '[](bold fg:surface2)[󰪢 $duration](bold bg:surface2 fg:text)[](bold fg:surface2)'
+
+
+# >>> NOCTALIA STARSHIP PALETTE >>>
+{{- $palettePath := joinPath .chezmoi.homeDir ".cache" "noctalia" "starship-palette.toml" -}}
+{{- if stat $palettePath }}
+{{ output "cat" $palettePath -}}
+{{- else }}
+# Noctalia Starship Palette fallback
+# Noctalia will replace this block after it generates ~/.cache/noctalia/starship-palette.toml.
+
+[palettes.noctalia]
+blue      = "#53a4f9"
+red       = "#fd4663"
+green     = "#3b3af8"
+yellow    = "#9b3af8"
+cyan      = "#8484fb"
+magenta   = "#84befb"
+white     = "#f2f2f3"
+black     = "#031e3a"
+rosewater = "#9b3af8"
+flamingo  = "#c084fb"
+pink      = "#84befb"
+mauve     = "#1a65b2"
+maroon    = "#fd4663"
+peach     = "#c084fb"
+teal      = "#3b3af8"
+sky       = "#8484fb"
+sapphire  = "#8484fb"
+lavender  = "#1a65b2"
+text      = "#f2f2f3"
+subtext1  = "#afb2b6"
+subtext0  = "#5f6974"
+overlay2  = "#5f6974"
+overlay1  = "#afb2b6"
+overlay0  = "#082849"
+surface2  = "#082849"
+surface1  = "#031e3a"
+surface0  = "#031e3a"
+base      = "#031e3a"
+mantle    = "#031e3a"
+crust     = "#181e25"
+{{- end }}
+# <<< NOCTALIA STARSHIP PALETTE <<<
