@@ -34,6 +34,12 @@
         draw-border-with-background false
     }
 
+    window-rule {
+        match app-id="zen"
+
+        draw-border-with-background false
+    }
+
     layer-rule {
         match namespace="^noctalia-(background|launcher-overlay|dock)-.*$"
         background-effect {

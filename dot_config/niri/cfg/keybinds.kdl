@@ -1,3 +1,5 @@
+spawn-at-startup "vicinae" "server"
+
 binds {
 
     // ────────────── Keybindings ──────────────
@@ -10,7 +12,7 @@ binds {
 
     // ─── Applications ───
     Mod+T                               hotkey-overlay-title="Open Terminal: Ghostty" { spawn "ghostty"; }
-    Mod+Space                           hotkey-overlay-title="Open App Launcher: noctalia launcher" { spawn-sh "qs -c noctalia-shell ipc call launcher toggle"; }
+    Mod+Space                           hotkey-overlay-title="Open App Launcher: vicinae" { spawn "vicinae" "toggle"; }
     Mod+S                               hotkey-overlay-title="Wallpaper Picker: noctalia wallpaper" { spawn-sh "qs -c noctalia-shell ipc call wallpaper toggle"; }
     Mod+CTRL+Return                     hotkey-overlay-title="Open App Launcher: noctalia launcher" { spawn-sh "qs -c noctalia-shell ipc call launcher toggle"; }
     Mod+B                               hotkey-overlay-title="Open Browser: Zen Browser" { spawn "zen-browser"; }
