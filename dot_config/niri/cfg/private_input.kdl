@@ -3,11 +3,8 @@
 
 input {
     keyboard {
-        xkb {
-            //If you want to overwrite your keyboard layout,
-            // uncomment the line below and change the layout accordingly.
-            //layout "us" // Use the American keyboard layout
-        }
+        xkb 
+
         numlock // Enable numlock on startup
     }
 
@@ -16,12 +13,8 @@ input {
         natural-scroll // Enable natural (macOS-style) scrolling
     }
 
-    mouse {
-        // If you want to disable Mouse Acceleration,
-        // uncomment the lines below.
-        //accel-profile "flat"
-        //accel-speed 0.0
-    }
+    mouse 
+
 
     focus-follows-mouse // Automatically focus windows under the mouse pointer
     workspace-auto-back-and-forth // Enable workspace back & forth switching
