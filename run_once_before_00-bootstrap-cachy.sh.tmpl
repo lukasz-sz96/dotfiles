@@ -1,8 +1,23 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+ID="unknown"
+ID_LIKE=""
+if [[ -r /etc/os-release ]]; then
+  # shellcheck disable=SC1091
+  source /etc/os-release
+fi
+
+case " ${ID} ${ID_LIKE} " in
+  *" arch "*|*" cachyos "*|*" endeavouros "*) ;;
+  *)
+    echo "Skipping Arch-only bootstrap on ${ID}."
+    exit 0
+    ;;
+esac
+
 if ! command -v pacman >/dev/null 2>&1; then
-  echo "This bootstrap is intended for CachyOS/Arch systems."
+  echo "pacman is not installed; skipping Arch-only bootstrap."
   exit 0
 fi
 
@@ -10,6 +25,6 @@ echo "==> Updating package database"
 sudo pacman -Sy --needed --noconfirm git base-devel curl chezmoi
 
 echo "==> Enabling wheel sudo if commented"
-if sudo grep -q '^# %wheel ALL=(ALL:ALL) ALL' /etc/sudoers; then
-  sudo sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
+if sudo grep -q "^# %wheel ALL=(ALL:ALL) ALL" /etc/sudoers; then
+  sudo sed -i "s/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/" /etc/sudoers
 fi

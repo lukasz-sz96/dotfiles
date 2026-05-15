@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Re-run when Flatpak package list changes:
+# flatpak: {{ include "packages/flatpak.txt" | sha256sum }}
+
+flatpak_file="{{ .chezmoi.sourceDir }}/packages/flatpak.txt"
+
+if ! command -v flatpak >/dev/null 2>&1; then
+  echo "Flatpak is not installed; skipping flatpak packages."
+  exit 0
+fi
+
+flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+tmp="$(mktemp)"
+cleanup() {
+  rm -f "$tmp"
+}
+trap cleanup EXIT
+
+sed "s/#.*//" "$flatpak_file" \
+  | sed "/^[[:space:]]*$/d" \
+  | sort -u > "$tmp"
+
+while read -r app_id; do
+  if flatpak info --user "$app_id" >/dev/null 2>&1 || flatpak info --system "$app_id" >/dev/null 2>&1; then
+    echo "==> Flatpak already installed: $app_id"
+    continue
+  fi
+
+  echo "==> Installing flatpak: $app_id"
+  flatpak install --user -y flathub "$app_id"
+done < "$tmp"

@@ -2,6 +2,11 @@
 set -euo pipefail
 
 {{- if eq .chezmoi.os "linux" }}
+if [[ "${CHEZMOI_INSTALL_VITE_PLUS:-false}" != "true" ]]; then
+  echo "Skipping Vite+ install. Set CHEZMOI_INSTALL_VITE_PLUS=true to enable it."
+  exit 0
+fi
+
 if command -v vp >/dev/null 2>&1; then
   exit 0
 fi

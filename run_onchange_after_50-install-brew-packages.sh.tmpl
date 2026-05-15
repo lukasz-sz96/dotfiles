@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Re-run when Homebrew package list changes:
+# brew: {{ include "packages/brew.txt" | sha256sum }}
+
+brew_file="{{ .chezmoi.sourceDir }}/packages/brew.txt"
+
+if ! command -v brew >/dev/null 2>&1; then
+  echo "Homebrew is not installed; skipping brew packages."
+  exit 0
+fi
+
+tmp="$(mktemp)"
+cleanup() {
+  rm -f "$tmp"
+}
+trap cleanup EXIT
+
+sed "s/#.*//" "$brew_file" \
+  | sed "/^[[:space:]]*$/d" \
+  | sort -u > "$tmp"
+
+while read -r pkg; do
+  if [[ "$pkg" == tap:* ]]; then
+    tap_name="${pkg#tap:}"
+    if brew tap | grep -Fx "$tap_name" >/dev/null 2>&1; then
+      echo "==> Brew tap already configured: $tap_name"
+      continue
+    fi
+
+    echo "==> Adding brew tap: $tap_name"
+    brew tap "$tap_name"
+    continue
+  fi
+
+  if brew list --formula "$pkg" >/dev/null 2>&1; then
+    echo "==> Brew package already installed: $pkg"
+    continue
+  fi
+
+  echo "==> Installing brew package: $pkg"
+  brew install "$pkg"
+done < "$tmp"
