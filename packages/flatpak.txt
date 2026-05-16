@@ -1,0 +1,4 @@
+# GUI applications for Flatpak.
+app.zen_browser.zen
+md.obsidian.Obsidian
+com.github.tchx84.Flatseal

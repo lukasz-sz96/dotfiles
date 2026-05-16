@@ -1,53 +1,63 @@
 # dotfiles
 
-Personal dotfiles managed by [chezmoi](https://www.chezmoi.io/), built for CachyOS with Niri and Noctalia shell.
-
+Personal chezmoi dotfiles for CachyOS/Arch and Bluefin/Atomic systems with Niri + Noctalia.
 
 ## Install
 
-On a fresh CachyOS system with Niri template:
+CachyOS/Arch:
 
-```sh
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply lukasz-sz96/dotfiles
-```
-
-If `chezmoi` is already installed:
-
-```sh
+```bash
 chezmoi init --apply lukasz-sz96/dotfiles
 ```
 
-## Package Lists
+Bluefin:
 
-Packages are split by source:
+```bash
+chezmoi init --apply --branch bluefin lukasz-sz96/dotfiles
+```
 
-- `packages/pacman.txt` contains packages from configured pacman repositories.
-- `packages/aur.txt` contains AUR packages installed through `paru`.
+From the custom Bluefin image:
 
+```bash
+ujust apply-dotfiles
+```
 
-## Bootstrap Behavior
+## Package Split
 
-The install scripts run through chezmoi:
+- `packages/image.txt`: packages that belong in the custom bootc image.
+- `packages/brew.txt`: user-space CLI and development tools for Homebrew.
+- `packages/flatpak.txt`: GUI apps for Flatpak.
+- `packages/arch/pacman.txt`: Arch repository packages.
+- `packages/arch/aur.txt`: AUR packages.
 
-- `run_once_before_00-bootstrap-cachy.sh.tmpl` installs base tools and enables wheel sudo.
-- `run_onchange_before_10-install-pacman-packages.sh.tmpl` installs packages from `packages/pacman.txt`.
-- `run_once_before_20-install-paru.sh.tmpl` installs `paru` if it is missing.
-- `run_onchange_before_30-install-aur-packages.sh.tmpl` installs packages from `packages/aur.txt`.
-- `run_once_after_40-install-vite-plus.sh.tmpl` installs the Vite+ `vp` CLI using the upstream Linux installer.
-- `run_once_after_80-create-extra-users.sh.tmpl` creates users listed in `users/extra-users.txt`.
+On Bluefin, dotfiles do not run `dnf`, `rpm-ostree`, `bootc`, `pacman`, `paru`, `yay`, or `makepkg`. Arch-only scripts are guarded with `/etc/os-release` checks.
 
-Review the scripts before applying on a new machine.
+## Optional Scripts
+
+Install Vite+:
+
+```bash
+CHEZMOI_INSTALL_VITE_PLUS=true chezmoi apply
+```
+
+Create extra users from `users/extra-users.txt` on Arch/CachyOS:
+
+```bash
+CHEZMOI_CREATE_EXTRA_USERS=true chezmoi apply
+```
+
+Both are skipped by default.
 
 ## Daily Use
 
-```sh
+```bash
 chezmoi diff
 chezmoi apply
 chezmoi cd
 ```
 
-After editing package lists, rerun:
+Bluefin verification:
 
-```sh
-chezmoi apply
+```bash
+scripts/check-bluefin.sh
 ```

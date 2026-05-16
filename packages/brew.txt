@@ -1,0 +1,27 @@
+# User-space CLI tools for Homebrew.
+btop
+eza
+fd
+ripgrep
+lazygit
+zoxide
+starship
+node
+luarocks
+mise
+pnpm
+tap:oven-sh/bun
+bun
+deno
+typescript
+typescript-language-server
+vscode-langservers-extracted
+prettier
+eslint
+biome
+go
+uv
+helix
+micro
+gh
+neovim

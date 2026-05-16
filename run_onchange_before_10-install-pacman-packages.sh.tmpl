@@ -2,13 +2,36 @@
 set -euo pipefail
 
 # Re-run when package list changes:
-# pacman: {{ include "packages/pacman.txt" | sha256sum }}
+# pacman: {{ include "packages/arch/pacman.txt" | sha256sum }}
+
+ID="unknown"
+ID_LIKE=""
+if [[ -r /etc/os-release ]]; then
+  # shellcheck disable=SC1091
+  source /etc/os-release
+fi
+
+case " ${ID} ${ID_LIKE} " in
+  *" arch "*|*" cachyos "*|*" endeavouros "*) ;;
+  *)
+    echo "Skipping pacman packages on ${ID}."
+    exit 0
+    ;;
+esac
+
+if ! command -v pacman >/dev/null 2>&1; then
+  echo "pacman is not installed; skipping pacman packages."
+  exit 0
+fi
 
 tmp="$(mktemp)"
-trap 'rm -f "$tmp"' EXIT
+cleanup() {
+  rm -f "$tmp"
+}
+trap cleanup EXIT
 
-sed 's/#.*//' "{{ .chezmoi.sourceDir }}/packages/pacman.txt" \
-  | sed '/^\s*$/d' \
+sed "s/#.*//" "{{ .chezmoi.sourceDir }}/packages/arch/pacman.txt" \
+  | sed "/^[[:space:]]*$/d" \
   | sort -u > "$tmp"
 
 echo "==> Installing pacman packages"
